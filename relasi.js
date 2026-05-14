@@ -19,17 +19,21 @@ async function createPost() {
   const content =
     document.getElementById("content").value;
 
-  const { error } = await supabaseClient
-    .from("posts")
-    .insert([
-      {
-        username,
-        title,
-        content
-      }
-    ]);
+  const { data, error } = await supabaseClient
+  .from("posts")
+  .insert([
+    {
+      username,
+      title,
+      content
+    }
+  ]);
 
-  if (error) {
-    console.error(error);
-  }
+console.log(data);
+console.log(error);
+
+if (error) {
+  console.error(error);
+} else {
+  console.log("POST SUCCESS");
 }
