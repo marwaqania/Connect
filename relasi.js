@@ -35,7 +35,58 @@ async function createPost() {
   if (error) {
     console.error(error);
   } else {
+
     console.log("POST SUCCESS");
+
+    // Clear inputs
+    document.getElementById("username").value = "";
+    document.getElementById("title").value = "";
+    document.getElementById("content").value = "";
+
+    // Reload posts
+    loadPosts();
+  }
+}
+
+async function loadPosts() {
+
+  const { data, error } = await supabaseClient
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
   }
 
+  const postsDiv =
+    document.getElementById("posts");
+
+  postsDiv.innerHTML = "";
+
+  data.forEach(post => {
+
+    const div = document.createElement("div");
+
+    div.className = "post";
+
+    div.innerHTML = `
+      <div class="post-card">
+        <h2>${post.title}</h2>
+
+        <small>
+          Posted by <b>${post.username}</b>
+        </small>
+
+        <p>${post.content}</p>
+      </div>
+    `;
+
+    postsDiv.appendChild(div);
+
+  });
 }
+
+// Load posts automatically when page opens
+loadPosts();
