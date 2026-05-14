@@ -9,7 +9,7 @@ const supabaseClient = supabase.createClient(
 async function createPost() {
 
   console.log("clicked");
-  
+
   const username =
     document.getElementById("username").value;
 
@@ -20,20 +20,22 @@ async function createPost() {
     document.getElementById("content").value;
 
   const { data, error } = await supabaseClient
-  .from("posts")
-  .insert([
-    {
-      username,
-      title,
-      content
-    }
-  ]);
+    .from("posts")
+    .insert([
+      {
+        username,
+        title,
+        content
+      }
+    ]);
 
-console.log(data);
-console.log(error);
+  console.log(data);
+  console.log(error);
 
-if (error) {
-  console.error(error);
-} else {
-  console.log("POST SUCCESS");
+  if (error) {
+    console.error(error);
+  } else {
+    console.log("POST SUCCESS");
+  }
+
 }
