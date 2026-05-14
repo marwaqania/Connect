@@ -64,22 +64,17 @@ header {
   margin-top: 10px;
 }
 
-.reply-input {
-  display: flex;
-  gap: 10px;
+.replies-section {
+  margin-top: 20px;
+}
+
+.reply-card {
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
   margin-top: 10px;
 }
 
-.reply-input input {
-  flex: 1;
-  padding: 8px;
-}
-
-.reply-input button {
-  background: #0079d3;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+.reply-card p {
+  margin: 5px 0;
 }
