@@ -6,6 +6,7 @@ const supabaseClient = supabase.createClient(
   SUPABASE_KEY
 );
 
+// CREATE POST
 async function createPost() {
 
   console.log("clicked");
@@ -18,6 +19,10 @@ async function createPost() {
 
   const content =
     document.getElementById("content").value;
+
+  if (!username || !title || !content) {
+    return;
+  }
 
   const { data, error } = await supabaseClient
     .from("posts")
@@ -48,6 +53,82 @@ async function createPost() {
   }
 }
 
+// CREATE REPLY
+async function createReply(postId) {
+
+  const username =
+    document.getElementById(`reply-name-${postId}`).value;
+
+  const reply =
+    document.getElementById(`reply-input-${postId}`).value;
+
+  if (!username || !reply) {
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("replies")
+    .insert([
+      {
+        post_id: postId,
+        username,
+        reply
+      }
+    ]);
+
+  if (error) {
+    console.error(error);
+  } else {
+
+    console.log("REPLY SUCCESS");
+
+    document.getElementById(
+      `reply-name-${postId}`
+    ).value = "";
+
+    document.getElementById(
+      `reply-input-${postId}`
+    ).value = "";
+
+    loadPosts();
+  }
+}
+
+// LOAD REPLIES
+async function loadReplies(postId) {
+
+  const { data, error } = await supabaseClient
+    .from("replies")
+    .select("*")
+    .eq("post_id", postId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    return "";
+  }
+
+  let repliesHTML = "";
+
+  data.forEach(reply => {
+
+    repliesHTML += `
+      <div class="reply-card">
+
+        <small>
+          <b>${reply.username}</b>
+        </small>
+
+        <p>${reply.reply}</p>
+
+      </div>
+    `;
+  });
+
+  return repliesHTML;
+}
+
+// LOAD POSTS
 async function loadPosts() {
 
   const { data, error } = await supabaseClient
@@ -65,7 +146,10 @@ async function loadPosts() {
 
   postsDiv.innerHTML = "";
 
-  data.forEach(post => {
+  for (const post of data) {
+
+    const repliesHTML =
+      await loadReplies(post.id);
 
     const div = document.createElement("div");
 
@@ -73,6 +157,7 @@ async function loadPosts() {
 
     div.innerHTML = `
       <div class="post-card">
+
         <h2>${post.title}</h2>
 
         <small>
@@ -80,13 +165,39 @@ async function loadPosts() {
         </small>
 
         <p>${post.content}</p>
+
+        <div class="replies-section">
+
+          <h4>Replies</h4>
+
+          ${repliesHTML}
+
+          <input
+            type="text"
+            id="reply-name-${post.id}"
+            placeholder="Your name"
+          >
+
+          <input
+            type="text"
+            id="reply-input-${post.id}"
+            placeholder="Write a reply..."
+          >
+
+          <button
+            onclick="createReply(${post.id})"
+          >
+            Reply
+          </button>
+
+        </div>
+
       </div>
     `;
 
     postsDiv.appendChild(div);
-
-  });
+  }
 }
 
-// Load posts automatically when page opens
+// LOAD POSTS AUTOMATICALLY
 loadPosts();
