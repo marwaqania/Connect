@@ -7,16 +7,17 @@ const supabaseClient = supabase.createClient(
 );
 
 async function createPost() {
-  const username = document.getElementById("username").value;
-  const title = document.getElementById("title").value;
-  const content = document.getElementById("content").value;
 
-  if (!username || !title || !content) {
-    alert("Fill all fields");
-    return;
-  }
+  const username =
+    document.getElementById("username").value;
 
-  await supabase
+  const title =
+    document.getElementById("title").value;
+
+  const content =
+    document.getElementById("content").value;
+
+  const { error } = await supabaseClient
     .from("posts")
     .insert([
       {
@@ -26,32 +27,7 @@ async function createPost() {
       }
     ]);
 
-  loadPosts();
+  if (error) {
+    console.error(error);
+  }
 }
-
-async function loadPosts() {
-  const { data } = await supabase
-    .from("posts")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  const postsDiv = document.getElementById("posts");
-
-  postsDiv.innerHTML = "";
-
-  data.forEach(post => {
-    const div = document.createElement("div");
-
-    div.className = "post";
-
-    div.innerHTML = `
-      <h2>${post.title}</h2>
-      <small>Posted by ${post.username}</small>
-      <p>${post.content}</p>
-    `;
-
-    postsDiv.appendChild(div);
-  });
-}
-
-loadPosts();
