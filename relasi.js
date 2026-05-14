@@ -8,6 +8,8 @@ const supabaseClient = supabase.createClient(
 
 async function createPost() {
 
+  console.log("clicked");
+  
   const username =
     document.getElementById("username").value;
 
