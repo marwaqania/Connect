@@ -201,3 +201,31 @@ async function loadPosts() {
 
 // LOAD POSTS AUTOMATICALLY
 loadPosts();
+const pages =
+  document.getElementById("pages");
+
+const forumTab =
+  document.getElementById("forum-tab");
+
+const quizTab =
+  document.getElementById("quiz-tab");
+
+forumTab.addEventListener("click", () => {
+
+  pages.style.transform =
+    "translateX(0%)";
+
+  forumTab.classList.add("active");
+  quizTab.classList.remove("active");
+
+});
+
+quizTab.addEventListener("click", () => {
+
+  pages.style.transform =
+    "translateX(-50%)";
+
+  quizTab.classList.add("active");
+  forumTab.classList.remove("active");
+
+});

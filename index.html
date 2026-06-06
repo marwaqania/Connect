@@ -11,23 +11,51 @@
   <header>
     <h1>Connect</h1>
     <h2>by Sonic KMPN</h2>
+    <div class="tabs">
+    <button class="tab active" id="forum-tab">
+      Forum
+    </button>
+
+    <button class="tab" id="quiz-tab">
+      Quiz
+    </button>
+    </div>
   </header>
 
-<div class="container">
+<div class="page-container">
+  <div class="pages" id="pages">
 
-  <div class="create-post">
-    <input type="text" id="username" placeholder="Your name">
-
-    <input type="text" id="title" placeholder="Post title">
-
-    <textarea id="content" placeholder="Write something..."></textarea>
-
-    <button type="button" onclick="createPost()">Post</button>
-  </div>
-
-  <div id="posts"></div>
+    <section class="page">
+      <div class="container">
+        <div class="create-post">
+          <input type="text" id="username" placeholder="Your name">
+          <input type="text" id="title" placeholder="Post title">
+          <textarea id="content" placeholder="Write something..."></textarea>
+          <button type="button" onclick="createPost()">Post</button>
+        </div>
+      <div id="posts"></div>
 
 </div>
+    </section>
+
+    <section class="page">
+    <div id="quiz-page">
+      <h2>Active Quizzes</h2>
+      <div class="quiz-grid">
+        <div class="quiz-card">
+          <h3>Aerospace Basics</h3>
+          <p>Introduction to aircraft and spaceflight.</p>
+          <a href="quizzes/aerospace.html">Start Quiz</a>
+        </div>
+      </div>
+    </div>
+    </section>
+
+  </div>
+
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="relasi.js"></script>
 </body>
